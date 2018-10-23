@@ -230,6 +230,9 @@ public class ApkUtils implements  VolleyListener{
                                 if(element.has("date")){
                                     remoteDate=element.getString("date");
                                 }
+                                if(element.has("filepath")){
+                                    remoteApkPath=element.getString("filepath");
+                                }
                                 Log.i("rzl","remote date:" + remoteDate);
                                 if(this.ctx!=null){
                                     String oldVersion=getVersionName(this.ctx);
@@ -237,7 +240,7 @@ public class ApkUtils implements  VolleyListener{
                                     _oldVersion=Float.parseFloat(oldVersion);
                                     _newVersion=Float.parseFloat(remoteVersion);
                                     if(_newVersion>_oldVersion){//开始下载
-                                        Log.i("rzl","begin downloading new apk...");
+                                        Log.i("rzl","begin downloading new apk," + remoteApkPath);
                                         Message msg=Message.obtain();
                                         msg.what=10013;
                                         Version v=new Version();
@@ -245,9 +248,10 @@ public class ApkUtils implements  VolleyListener{
                                         v.setDescription(remoteDescription);
                                         v.setVersion(_newVersion);
                                         v.setMarketId(marketId);
+                                        v.setApkPath(remoteApkPath);
                                         msg.obj=v;
                                         handler.sendMessage(msg);//通知UI显示下载对话框
-                                        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://www.anluyun.com:3100/main/android/aapfe.apk?timestamp=" + Math.random()));
+                                        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(remoteApkPath + "?timestamp=" + Math.random()));
                                         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);//允许手机流量和wifi
                                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"/smartWeight.apk");
                                         //request.setDestinationInExternalFilesDir(this.ctx,Environment.getExternalStorageDirectory().toString(),"smartWeight.apk");
@@ -270,7 +274,6 @@ public class ApkUtils implements  VolleyListener{
                                                 if(downloadId==id){
                                                     isWorking=false;
                                                     ctx.getContentResolver().unregisterContentObserver(dco);//取消监控下载过程
-                                                    Log.i("rzl","download completed,ready to install");
                                                     DownloadManager.Query query=new DownloadManager.Query();
                                                     query.setFilterById(id);
                                                     Cursor cs= dm.query(query);
@@ -280,12 +283,19 @@ public class ApkUtils implements  VolleyListener{
                                                             Log.i("rzl",i + ",key:" + cs.getColumnName(i)  + ",value:" + cs.getString(i));
                                                         }*/
                                                         String fileName=cs.getString(cs.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME));
-                                                        if(fileName!=null){
-                                                            Log.i("rzl","will install:" + fileName);
-                                                            Log.i("rzl","externam storage public directory:" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-                                                            File f=new File(fileName);
-                                                            Log.i("rzl","file111 exist? " + f.exists());
-                                                            installUseAS(ctx,fileName);
+                                                        int downloadedBytes=cs.getInt(cs.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                                                        if(downloadedBytes>0){
+                                                            if(fileName!=null){
+
+                                                                Log.i("rzl","will install:" + fileName);
+                                                                Log.i("rzl","externam storage public directory:" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                                                                File f=new File(fileName);
+                                                                Log.i("rzl","file111 exist? " + f.exists());
+                                                                installUseAS(ctx,fileName);
+                                                            }
+                                                        }else{
+                                                            Log.i("rzl","下载失败");
+                                                            handler.sendEmptyMessage(10014);
                                                         }
                                                     }
                                                     cs.close();
@@ -334,6 +344,7 @@ public class ApkUtils implements  VolleyListener{
     private String remoteVersion;//新版本号
     private String remoteDescription;//新版本描述
     private String remoteDate;//新版本发布日期
+    private String remoteApkPath;//远程apk路径
     //单例，实现了网络通讯功能
     private static com.axecom.iweight.my.rzl.utils.ApkUtils myself;
     public static com.axecom.iweight.my.rzl.utils.ApkUtils getInstance(){

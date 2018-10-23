@@ -3,6 +3,7 @@ package com.axecom.iweight.my.rzl.utils;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -33,11 +34,13 @@ public class DownloadDialog extends Dialog {
         tvDescription=findViewById(R.id.tvDownload_Apk_Description);
         tvProgress=findViewById(R.id.tvDownload_Apk_Progress);
         pbProgress=findViewById(R.id.pbDownload_Apk_Progress);
+        tvApkPath=findViewById(R.id.tvDownload_Apk_Path);
         Log.i("rzl","tvVersion is null ? " + (tvVersion==null));
         tvMarketId.setText("市场编号:" + this.getMarketId());
         tvDate.setText("更新日期:" + this.getDate());
         tvVersion.setText("版本号:" + this.getVersion());
         tvDescription.setText("更新内容:" + this.getDescription());
+        tvApkPath.setText("文件:" + this.getApkPath());
         tvProgress.setText("更新进度:" + this.getDownloadedBytes() + "/" + this.getTotalBytes());
         pbProgress.setMax(0);
     }
@@ -48,7 +51,7 @@ public class DownloadDialog extends Dialog {
     private TextView tvDescription;
     private TextView tvProgress;
     private ProgressBar pbProgress;
-
+    private TextView tvApkPath;
 
     private int downloadedBytes;//已下载量
     private int totalBytes;//总下载量
@@ -56,6 +59,7 @@ public class DownloadDialog extends Dialog {
     private float version;//最新版本号
     private String date;//更新日期
     private String marketId;//市场编号
+    private  String apkPath;//apk路径
     private boolean canDismiss;//是否可退出（必须等下载完毕之后才能退出）
     public int getDownloadedBytes() {
         return downloadedBytes;
@@ -99,6 +103,14 @@ public class DownloadDialog extends Dialog {
      //   tvVersion.setText("版本号:"+version);
     }
 
+    public String getApkPath() {
+        return apkPath;
+    }
+
+    public void setApkPath(String apkPath) {
+        this.apkPath = apkPath;
+    }
+
     public String getDate() {
         return date;
     }
@@ -129,6 +141,13 @@ public class DownloadDialog extends Dialog {
         }
     }
 
+    //允许强行关闭
+    public void canForceQuit(){
+        this.canDismiss=true;
+        this.tvDescription.setText("更新失败!!!!!!!");
+        //this.tvDescription.setHighlightColor(0xff0000);
+        this.tvDescription.setTextColor(Color.rgb(0xff,0x00,0x00));
+    }
     @Override
     public void dismiss() {
         if(this.canDismiss){

@@ -87,6 +87,8 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.xml.datatype.Duration;
+
 import static com.axecom.iweight.utils.CommonUtils.parseFloat;
 import static com.shangtongyin.tools.serialport.IConstants_ST.KEY;
 import static com.shangtongyin.tools.serialport.IConstants_ST.MARKET_ID;
@@ -206,7 +208,16 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
                             downloadDialog.setDate(v.date);//更新日期
                             downloadDialog.setMarketId(String.valueOf(v.getMarketId()));//市场编号
                             downloadDialog.setDescription(v.description);//更新描述
+                            downloadDialog.setApkPath(v.apkPath);//apk路径
                             downloadDialog.show();
+                        }
+                    });
+                }else if(msg.what==10014){//下载失败,允许强行关闭对话框
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadDialog.canForceQuit();
+                            Toast.makeText(MainActivity.this,"更新App失败,请联系运营人员",Toast.LENGTH_LONG).show();
                         }
                     });
                 }

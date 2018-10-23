@@ -5,7 +5,7 @@ public class Version {
     public String description;//更新的内容描述
     public String date;//更新日期
     public int marketId;//市场编号
-
+    public String apkPath;//apk路径
     public float getVersion() {
         return version;
     }
@@ -36,5 +36,13 @@ public class Version {
 
     public void setMarketId(int marketId) {
         this.marketId = marketId;
+    }
+
+    public String getApkPath() {
+        return apkPath;
+    }
+
+    public void setApkPath(String apkPath) {
+        this.apkPath = apkPath;
     }
 }

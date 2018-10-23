@@ -35,6 +35,10 @@ import com.axecom.iweight.my.entity.dao.GoodsDao;
 import com.axecom.iweight.my.entity.dao.GoodsTypeDao;
 import com.axecom.iweight.my.entity.dao.UserInfoDao;
 import com.axecom.iweight.my.net.NetHelper;
+import com.axecom.iweight.my.rzl.Constrant;
+import com.axecom.iweight.my.rzl.utils.ApkUtils;
+import com.axecom.iweight.my.rzl.utils.DownloadDialog;
+import com.axecom.iweight.my.rzl.utils.Version;
 import com.axecom.iweight.ui.view.CustomDialog;
 import com.axecom.iweight.ui.view.SoftKeyborad;
 import com.axecom.iweight.utils.ButtonUtils;
@@ -87,13 +91,43 @@ public class HomeActivity extends Activity implements View.OnClickListener, Voll
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sysApplication = (SysApplication) getApplication();
-        setInitView();
-        initView();
-        initHandler();
-
-        goodsDao = new GoodsDao<>(context);
-        goodsTypeDao = new GoodsTypeDao<>(context);
-        allGoodsDao = new AllGoodsDao<>(context);
+        if(Constrant.DEBUG){//自动更新app演示块
+            final DownloadDialog downloadDialog=new DownloadDialog(this);
+            ApkUtils.checkRemoteVersion(1,sysApplication,new Handler(){
+                @Override
+                public void handleMessage(final Message msg) {
+                    if(msg.what==10012){//有下载进度
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(msg.arg2>0){
+                                    downloadDialog.setProgress(msg.arg1,msg.arg2);//arg1:已下载字节数,arg2:总字节数
+                                }
+                            }
+                        });
+                    }else if(msg.what==10013){//显示下载进度对话框
+                        final Version v=(Version) msg.obj;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                downloadDialog.setVersion(v.version);//版本
+                                downloadDialog.setDate(v.date);//更新日期
+                                downloadDialog.setDescription(v.description);//更新描述
+                                downloadDialog.show();
+                            }
+                        });
+                    }
+                    super.handleMessage(msg);
+                }
+            });
+        }else{
+            setInitView();
+            initView();
+            initHandler();
+            goodsDao = new GoodsDao<>(context);
+            goodsTypeDao = new GoodsTypeDao<>(context);
+            allGoodsDao = new AllGoodsDao<>(context);
+        }
     }
 
 

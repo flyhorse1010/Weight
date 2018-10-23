@@ -51,6 +51,9 @@ import com.axecom.iweight.my.entity.dao.GoodsDao;
 import com.axecom.iweight.my.entity.dao.OrderBeanDao;
 import com.axecom.iweight.my.entity.dao.OrderInfoDao;
 import com.axecom.iweight.my.helper.HeartBeatServcice;
+import com.axecom.iweight.my.rzl.utils.ApkUtils;
+import com.axecom.iweight.my.rzl.utils.DownloadDialog;
+import com.axecom.iweight.my.rzl.utils.Version;
 import com.axecom.iweight.ui.activity.setting.GoodsSettingActivity;
 import com.axecom.iweight.ui.adapter.GoodMenuAdapter;
 import com.axecom.iweight.utils.ButtonUtils;
@@ -179,6 +182,37 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
     }
 
+    //检查版本更新
+    private void checkVersion(){
+        final DownloadDialog downloadDialog=new DownloadDialog(this);
+        ApkUtils.checkRemoteVersion(1,sysApplication,new Handler(){
+            @Override
+            public void handleMessage(final Message msg) {
+                if(msg.what==10012){//有下载进度
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(msg.arg2>0){
+                                downloadDialog.setProgress(msg.arg1,msg.arg2);//arg1:已下载字节数,arg2:总字节数
+                            }
+                        }
+                    });
+                }else if(msg.what==10013){//显示下载进度对话框
+                    final Version v=(Version) msg.obj;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadDialog.setVersion(v.version);//版本
+                            downloadDialog.setDate(v.date);//更新日期
+                            downloadDialog.setDescription(v.description);//更新描述
+                            downloadDialog.show();
+                        }
+                    });
+                }
+                super.handleMessage(msg);
+            }
+        });
+    }
     private void initData() {
         HotKeyBeanList = new ArrayList<>();
         orderBeans = new ArrayList<>();
@@ -212,6 +246,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        checkVersion();//检查版本更新
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

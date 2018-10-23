@@ -186,6 +186,7 @@ public class ApkUtils implements  VolleyListener{
         if(context!=null){
             if(context instanceof MyBaseApplication){
                 com.axecom.iweight.my.rzl.utils.ApkUtils.getInstance().ctx=context;//用来获得旧版本信息和显示下载进度
+                ApkUtils.getInstance().marketId=marketId;
                 ApkUtils.getInstance().handler=handler;
                 MyBaseApplication ma=(MyBaseApplication) context;
                 ma.volleyGet(url, com.axecom.iweight.my.rzl.utils.ApkUtils.getInstance(),10010);//10010代表检查版本更新
@@ -243,13 +244,14 @@ public class ApkUtils implements  VolleyListener{
                                         v.setDate(remoteDate);
                                         v.setDescription(remoteDescription);
                                         v.setVersion(_newVersion);
+                                        v.setMarketId(marketId);
                                         msg.obj=v;
                                         handler.sendMessage(msg);//通知UI显示下载对话框
                                         DownloadManager.Request request=new DownloadManager.Request(Uri.parse("http://www.anluyun.com:3100/main/android/aapfe.apk?timestamp=" + Math.random()));
                                         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);//允许手机流量和wifi
                                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"/smartWeight.apk");
                                         //request.setDestinationInExternalFilesDir(this.ctx,Environment.getExternalStorageDirectory().toString(),"smartWeight.apk");
-                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);//在下载过程中通知栏会一直显示该下载的Notification，在下载完成后该Notification会继续显示，直到用户点击该Notification或者消除该Notification。
+                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);//在下载过程中通知栏是否会一直显示该下载的Notification
                                         //设置通知信息
                                         request.setTitle("智慧称");
                                         request.setDescription("安鑫宝智慧称-可溯源、防作弊");
@@ -326,6 +328,7 @@ public class ApkUtils implements  VolleyListener{
     private static boolean isWorking=false;//是否正在工作-防止连续发起多次检查更新操作
     // private long downloadId;DownloadManager下载完后返回的一个下载id,自带的，每一个下载任务都会返回一个唯一的id，并且会发一条广播
     private Context ctx;//检查版本更新传入，显示进度画面、获得旧版本信息需要用到
+    private int marketId;//市场编号
     private Handler handler;//用来向UI通知消息
     //  private Activity act;//用来安装apk用的
     private String remoteVersion;//新版本号

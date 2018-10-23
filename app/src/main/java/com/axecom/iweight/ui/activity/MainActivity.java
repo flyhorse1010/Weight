@@ -204,6 +204,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
                         public void run() {
                             downloadDialog.setVersion(v.version);//版本
                             downloadDialog.setDate(v.date);//更新日期
+                            downloadDialog.setMarketId(String.valueOf(v.getMarketId()));//市场编号
                             downloadDialog.setDescription(v.description);//更新描述
                             downloadDialog.show();
                         }
@@ -246,10 +247,10 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        checkVersion(sysApplication.getMarketid());//检查版本更新
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkVersion(sysApplication.getMarketid());//检查版本更新
         initViewFirst();
         initData();
         initView();

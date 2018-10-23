@@ -3,10 +3,12 @@
     android:orientation="vertical"
     android:layout_width="500dp"
     android:layout_height="200dp"
+    android:paddingTop="0dp"
     >
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="30dp"
+    android:layout_marginTop="0dp"
     android:background="#4499ff">
     <TextView
         android:id="@+id/textView5"
@@ -24,6 +26,12 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvDownload_Apk_MarketId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="市场编号：3"
+            />
         <TextView
             android:id="@+id/tvDownload_Apk_Date"
             android:layout_width="wrap_content"

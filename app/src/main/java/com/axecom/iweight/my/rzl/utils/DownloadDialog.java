@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,19 +20,21 @@ public class DownloadDialog extends Dialog {
     public DownloadDialog(@NonNull Context context) {
         super(context);
         canDismiss=false;
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.download_apk);
-
+        tvMarketId=findViewById(R.id.tvDownload_Apk_MarketId);
         tvDate=findViewById(R.id.tvDownload_Apk_Date);
         tvVersion=findViewById(R.id.tvDownload_Apk_Version);
         tvDescription=findViewById(R.id.tvDownload_Apk_Description);
         tvProgress=findViewById(R.id.tvDownload_Apk_Progress);
         pbProgress=findViewById(R.id.pbDownload_Apk_Progress);
         Log.i("rzl","tvVersion is null ? " + (tvVersion==null));
+        tvMarketId.setText("市场编号:" + this.getMarketId());
         tvDate.setText("更新日期:" + this.getDate());
         tvVersion.setText("版本号:" + this.getVersion());
         tvDescription.setText("更新内容:" + this.getDescription());
@@ -38,17 +42,20 @@ public class DownloadDialog extends Dialog {
         pbProgress.setMax(0);
     }
 
+    private TextView tvMarketId;
     private TextView tvDate;
     private TextView tvVersion;
     private TextView tvDescription;
     private TextView tvProgress;
     private ProgressBar pbProgress;
 
+
     private int downloadedBytes;//已下载量
     private int totalBytes;//总下载量
     private String description;//更新描述
     private float version;//最新版本号
     private String date;//更新日期
+    private String marketId;//市场编号
     private boolean canDismiss;//是否可退出（必须等下载完毕之后才能退出）
     public int getDownloadedBytes() {
         return downloadedBytes;
@@ -68,6 +75,14 @@ public class DownloadDialog extends Dialog {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(String marketId) {
+        this.marketId = marketId;
     }
 
     public void setDescription(String description) {

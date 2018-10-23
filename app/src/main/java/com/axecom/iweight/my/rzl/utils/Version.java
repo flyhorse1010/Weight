@@ -4,6 +4,7 @@ public class Version {
     public float version;//服务器端的新版本号
     public String description;//更新的内容描述
     public String date;//更新日期
+    public int marketId;//市场编号
 
     public float getVersion() {
         return version;
@@ -27,5 +28,13 @@ public class Version {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(int marketId) {
+        this.marketId = marketId;
     }
 }

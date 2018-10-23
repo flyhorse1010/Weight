@@ -183,9 +183,9 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
     }
 
     //检查版本更新
-    private void checkVersion(){
+    private void checkVersion(int marketId){
         final DownloadDialog downloadDialog=new DownloadDialog(this);
-        ApkUtils.checkRemoteVersion(1,sysApplication,new Handler(){
+        ApkUtils.checkRemoteVersion(marketId,sysApplication,new Handler(){
             @Override
             public void handleMessage(final Message msg) {
                 if(msg.what==10012){//有下载进度
@@ -246,7 +246,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        checkVersion();//检查版本更新
+        checkVersion(sysApplication.getMarketid());//检查版本更新
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

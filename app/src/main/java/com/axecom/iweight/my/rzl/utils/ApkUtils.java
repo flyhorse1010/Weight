@@ -257,8 +257,8 @@ public class ApkUtils implements  VolleyListener{
                                         //request.setDestinationInExternalFilesDir(this.ctx,Environment.getExternalStorageDirectory().toString(),"smartWeight.apk");
                                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);//在下载过程中通知栏是否会一直显示该下载的Notification
                                         //设置通知信息
-                                        request.setTitle("智慧称");
-                                        request.setDescription("安鑫宝智慧称-可溯源、防作弊");
+                                        request.setTitle("智能称");
+                                        request.setDescription("安鑫宝智能称-可溯源、防作弊");
                                         request.setVisibleInDownloadsUi(true);
                                         request.allowScanningByMediaScanner();
                                         request.setMimeType("application/vnd.android.package-archive");

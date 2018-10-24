@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_horizontal"
-            android:text="智慧称App远程更新" />
+            android:text="智能称App远程更新" />
     </LinearLayout>
 
     <LinearLayout

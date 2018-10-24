@@ -90,6 +90,7 @@ import java.util.TimerTask;
 import static com.axecom.iweight.utils.CommonUtils.parseFloat;
 import static com.shangtongyin.tools.serialport.IConstants_ST.KEY;
 import static com.shangtongyin.tools.serialport.IConstants_ST.MARKET_ID;
+import static com.shangtongyin.tools.serialport.IConstants_ST.MARKET_NAME;
 import static com.shangtongyin.tools.serialport.IConstants_ST.MCHID;
 import static com.shangtongyin.tools.serialport.IConstants_ST.NOTIFY_CLEAR;
 import static com.shangtongyin.tools.serialport.IConstants_ST.NOTIFY_EPAY_SUCCESS;
@@ -115,11 +116,11 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
     private TextView tvgrandTotal;
     private TextView tvTotalWeight;
     private TextView weightTv;
-    private TextView weightNumberTv;
+
     private TextView tvTotalPrice;
-    private TextView operatorTv;
+
     private TextView stallNumberTv;
-    private TextView componyTitleTv;
+
     private TextView weightTopTv;
     private List<HotKeyBean> HotKeyBeanList;
     private List<OrderBean> orderBeans;
@@ -135,11 +136,18 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
 //    private ThreadPool threadPool;  //线程池 管理
     private boolean flag = true;
-    private TextView loginTypeName;
-    private boolean mNotPushRemote;
+
     private DownloadDialog downloadDialog;
 
     private void initViewFirst() {
+
+        TextView tvSeller = findViewById(R.id.tvSeller);
+        TextView tvmarketName = findViewById(R.id.tvmarketName);
+        TextView tvTid = findViewById(R.id.tvTid);
+        tvSeller.setText(seller);
+        tvTid.setText(tid + "");
+        tvmarketName.setText(marketname);
+
 
         digitalGridView = findViewById(R.id.main_digital_keys_grid_view);
         commoditysListView = findViewById(R.id.main_commoditys_list_view);
@@ -151,11 +159,10 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         tvTotalWeight = findViewById(R.id.main_weight_total_tv);
 //        weightTotalMsgTv = findViewById(R.id.main_weight_total_msg_tv);
         weightTv = findViewById(R.id.main_weight_tv);
-        operatorTv = findViewById(R.id.main_operator_tv);
-        loginTypeName = findViewById(R.id.tv_login_type_name);
+
+
         stallNumberTv = findViewById(R.id.main_stall_number_tv);
-        weightNumberTv = findViewById(R.id.main_weight_number_tv);
-        componyTitleTv = findViewById(R.id.main_compony_title_tv);
+
         tvTotalPrice = findViewById(R.id.main_price_total_tv);
         weightTopTv = findViewById(R.id.main_weight_top_tv);
 //        weightTopMsgTv = findViewById(R.id.main_weight_msg_tv);
@@ -211,6 +218,13 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+        tid = PreferenceUtils.getInt(context, TID, -1);
+        marketId = PreferenceUtils.getInt(context, MARKET_ID, -1);
+        marketname = PreferenceUtils.getString(context, MARKET_NAME, "");
+        sellerid = PreferenceUtils.getInt(context, SELLER_ID, -1);
+        seller = PreferenceUtils.getString(context, SELLER, null);
+        key = PreferenceUtils.getString(context, KEY, null);
+        mchid = PreferenceUtils.getString(context, MCHID, null);
 
         initViewFirst();
         initHandler();
@@ -482,8 +496,6 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
 
     public void initView() {
-
-        weightNumberTv.setText(AccountManager.getInstance().getScalesId());
         initSettlement();
 
         gvGoodMenu = findViewById(R.id.gvGoodMenu);
@@ -543,6 +555,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
     private ServiceConnection mConnection;
     private int tid = -1;  //秤的编号
     private int marketId = -1;  // 市场id
+    private String marketname;  // 市场id
     private String seller;  //售卖人
     private String key;  //售卖人
     private String mchid;  //售卖人
@@ -552,12 +565,6 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
      * 初始化心跳
      */
     private void initHeartBeat() {
-        tid = PreferenceUtils.getInt(context, TID, -1);
-        marketId = PreferenceUtils.getInt(context, MARKET_ID, -1);
-        sellerid = PreferenceUtils.getInt(context, SELLER_ID, -1);
-        seller = PreferenceUtils.getString(context, SELLER, null);
-        key = PreferenceUtils.getString(context, KEY, null);
-        mchid = PreferenceUtils.getString(context, MCHID, null);
 
 
         if (tid > 0 && marketId > 0) {
@@ -874,7 +881,6 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
     }
 
 
-
     /**
      * shangtong 打印机打印
      */
@@ -1056,9 +1062,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         }
 
 
-
         intent.setClass(this, UseCashActivity.class);
-
 
 
     }
@@ -1100,7 +1104,6 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         orderInfo.setDay(Integer.valueOf(dayTime));
         orderInfo.setSettlemethod(payType);
         orderInfo.setBillcode(billcode);
-
 
 
         btnShangtongPrint(orderInfo);

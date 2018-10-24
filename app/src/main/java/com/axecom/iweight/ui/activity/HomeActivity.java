@@ -427,6 +427,7 @@ public class HomeActivity extends Activity implements View.OnClickListener, Voll
                         SharedPreferences sp = PreferenceUtils.getSp(context);
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putInt(MARKET_ID, userInfo.getMarketid());
+                        editor.putString(MARKET_NAME, userInfo.getMarketname());
                         editor.putInt(TID, userInfo.getTid());
                         editor.putInt(SELLER_ID, userInfo.getSellerid());
                         editor.putString(SELLER, userInfo.getSeller());

@@ -41,6 +41,7 @@ public interface IConstants_ST {
      * 市场 id
      */
     String MARKET_ID = "marketid";
+    String MARKET_NAME = "marketname";
     /**
      * 秤编号id
      */

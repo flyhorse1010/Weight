@@ -56,9 +56,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
-
-        tools:replace="android:icon"
-       >
+        tools:replace="android:icon">
 
         <!-- tools:replace="android:icon, android:theme,android:allowBackup,android:label" -->
         <activity
@@ -86,15 +84,17 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden">
- <!--           <intent-filter>
+
+            <!--
+  <intent-filter>
 
   android:hardwareAccelerated="true"
                 <action android:name="android.intent.action.DEFAULT" />
 
                 <category android:name="com.jb.sdk.service.JbPrintService" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".ui.activity.UseBankCardActivity"
@@ -253,7 +253,8 @@
             android:name="JPUSH_APPKEY"
             android:value="b032faec40fdd8fd898aaef0" /> <!-- </>值来自开发者平台取得的AppKey -->
         <activity android:name=".my.LogActivity" />
-        <activity android:name=".ui.activity.TestActivity"></activity>
+        <activity android:name=".ui.activity.TestActivity" />
+        <activity android:name=".ui.activity.datasummary.SummaryActivity"></activity>
     </application>
 
 </manifest>

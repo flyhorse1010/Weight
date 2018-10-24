@@ -34,18 +34,23 @@ import com.axecom.iweight.manager.AccountManager;
 import com.axecom.iweight.manager.MacManager;
 import com.axecom.iweight.manager.SystemSettingManager;
 import com.axecom.iweight.my.entity.Goods;
+import com.axecom.iweight.my.entity.OrderInfo;
 import com.axecom.iweight.my.entity.ResultInfo;
 import com.axecom.iweight.my.entity.dao.GoodsDao;
+import com.axecom.iweight.my.entity.dao.OrderInfoDao;
 import com.axecom.iweight.net.RetrofitFactory;
+import com.axecom.iweight.ui.activity.datasummary.SummaryActivity;
 import com.axecom.iweight.ui.activity.setting.GoodsSettingActivity;
 import com.axecom.iweight.utils.SPUtils;
 import com.luofx.listener.VolleyListener;
+import com.luofx.utils.DateUtils;
 import com.luofx.utils.common.MyToast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -62,7 +67,7 @@ import io.reactivex.disposables.Disposable;
  * Created by Administrator on 2018-5-16.
  */
 
-public class SettingsActivity extends BaseActivity  implements VolleyListener {
+public class SettingsActivity extends BaseActivity implements VolleyListener {
     public static final String KET_SWITCH_SIMPLE_OR_COMPLEX = "key_switch_simple_or_complex";
     public static final String ACTION_NET_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE";
     public static final String IS_RE_BOOT = "is_re_boot";
@@ -127,15 +132,16 @@ public class SettingsActivity extends BaseActivity  implements VolleyListener {
     private WifiManager wifiManager;
 
 
-    private  Context context;
+    private Context context;
     private SysApplication sysApplication;
+
     @Override
     public View setInitView() {
         @SuppressLint("InflateParams") View rootView = LayoutInflater.from(this).inflate(R.layout.settings_activity, null);
         settingsGV = rootView.findViewById(R.id.settings_grid_view);
 
-        context=this;
-        sysApplication= (SysApplication) getApplication();
+        context = this;
+        sysApplication = (SysApplication) getApplication();
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (wifiManager != null && !wifiManager.isWifiEnabled()) {
@@ -180,7 +186,11 @@ public class SettingsActivity extends BaseActivity  implements VolleyListener {
         findViewById(R.id.btnDataUpdate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initGoods(sysApplication.getTid());
+//                initGoods(sysApplication.getTid());
+                OrderInfoDao<OrderInfo> orderInfoDao = new OrderInfoDao<>(context);
+
+                String day = DateUtils.getYYMMDD(new Date());
+                List<OrderInfo> list = orderInfoDao.queryByDay(day);
             }
         });
     }
@@ -215,15 +225,13 @@ public class SettingsActivity extends BaseActivity  implements VolleyListener {
                 if (resultInfo != null) {
                     List<Goods> goodsList = JSON.parseArray(resultInfo.getData(), Goods.class);
                     if (goodsList != null && goodsList.size() > 0) {
-                        GoodsDao<Goods> goodsDao=new GoodsDao<>(context);
+                        GoodsDao<Goods> goodsDao = new GoodsDao<>(context);
                         goodsDao.insert(goodsList);
                     }
                 }
                 break;
         }
     }
-
-
 
     AdapterView.OnItemClickListener settingsOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -234,7 +242,7 @@ public class SettingsActivity extends BaseActivity  implements VolleyListener {
 //                    finish();
                     break;
                 case POSITION_REPORTS:
-                    startDDMActivity(DataSummaryActivity.class, false);
+                    startDDMActivity(SummaryActivity.class, false);
                     break;
                 case POSITION_INVALID:
                     startDDMActivity(OrderInvalidActivity.class, false);
@@ -334,6 +342,7 @@ public class SettingsActivity extends BaseActivity  implements VolleyListener {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                     }
+
                     @Override
                     public void onNext(final BaseEntity<WeightBean> baseEntity) {
                         if (baseEntity.isSuccess()) {

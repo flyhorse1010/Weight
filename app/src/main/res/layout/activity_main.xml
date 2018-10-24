@@ -628,17 +628,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/main_cash_btn"
-                android:layout_width="0dp"
-                android:layout_height="75dp"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/selector_btn_carsh_click"
-                android:text="@string/string_pay_cash"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+
 
             <Button
                 android:id="@+id/main_scan_pay"
@@ -646,10 +636,22 @@
                 android:layout_height="75dp"
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="1dp"
+
                 android:background="@drawable/selector_btn_carsh_click"
                 android:text="@string/string_scan_pay"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/main_cash_btn"
+                android:layout_width="0dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:layout_marginStart="3dp"
+                android:background="@drawable/selector_btn_carsh_click"
+                android:text="@string/string_pay_cash"
                 android:textColor="@color/black"
                 android:textSize="30sp"
                 android:textStyle="bold" />

@@ -198,7 +198,7 @@ public class PrinterManager {
         }
     }
 
-    public void printerOrderOfDayAndMonth(List<ReportResultBean.list> dataList, ReportResultBean reportResultBean) {
+ /*   public void printerOrderOfDayAndMonth(List<ReportResultBean.list> dataList, ReportResultBean reportResultBean) {
         EscCommand esc = new EscCommand();
         esc.addInitializePrinter();
         esc.addPrintAndFeedLines((byte) 3);
@@ -228,7 +228,7 @@ public class PrinterManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void printerOrderDetails(List<OrderListResultBean.list> orderList, OrderListResultBean orderListResultBean) {
         EscCommand esc = new EscCommand();

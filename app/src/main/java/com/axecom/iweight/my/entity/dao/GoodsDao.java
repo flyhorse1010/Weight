@@ -6,6 +6,7 @@ import android.content.Context;
 import com.axecom.iweight.my.entity.Goods;
 import com.axecom.iweight.my.entity.OrderInfo;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.GenericRawResults;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +23,8 @@ public class GoodsDao<T> {
 
     public GoodsDao(Context context) {
         try {
-            this.dao = OrmliteBaseHelper.getInstance(context.getApplicationContext()).getDao(Goods.class);
+            OrmliteBaseHelper ormliteBaseHelper = OrmliteBaseHelper.getInstance(context.getApplicationContext());
+            this.dao = ormliteBaseHelper.getDao(Goods.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,6 +65,20 @@ public class GoodsDao<T> {
     public void delete(T data) {
         try {
             dao.delete(data);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 删除数据
+    public void delete2(T data) {
+        try {
+
+//            SELECT DATE_FORMAT(f.created_at,'%Y-%m-%d') days
+//            FROM samplerules f   GROUP BY DATE_FORMAT(f.created_at,'%Y-%m-%d')
+
+            dao.queryBuilder().groupBy("f").query();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,8 +125,9 @@ public class GoodsDao<T> {
         }
         return null;
     }
+
     //    // 通过条件查询文章集合（通过用户ID查找）
-    public List<T> queryByTypeId(int  id) {
+    public List<T> queryByTypeId(int id) {
         try {
             return dao.queryBuilder().where().eq("typeid", id).query();
         } catch (SQLException e) {
@@ -144,6 +161,22 @@ public class GoodsDao<T> {
     public List<T> queryAll() {
         try {
 //            return dao.queryBuilder().where().eq("Status", 0).query();
+            return dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // 查找所有bean
+    public List<T> queryAllTest() {
+        try {
+//            return dao.queryBuilder().where().eq("Status", 0).query();
+
+//       GenericRawResults<T[]> afa= dao.query("","fasf");
+
+
             return dao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();

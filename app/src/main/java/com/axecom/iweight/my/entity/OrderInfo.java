@@ -47,6 +47,10 @@ public class OrderInfo implements Cloneable{
     @DatabaseField
     private String time;
     @DatabaseField
+    private int hour; //小時
+    @DatabaseField
+    private int day; //小時
+    @DatabaseField
     private String totalamount;  // 总金额
     @DatabaseField
     private String totalweight;  // 总重量
@@ -167,6 +171,21 @@ public class OrderInfo implements Cloneable{
         this.time = time;
     }
 
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException {

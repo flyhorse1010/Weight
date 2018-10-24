@@ -958,7 +958,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
     /**
      * shangtong 打印机打印
      */
-    @SuppressLint("StaticFieldLeak")
+
     public void btnShangtongPrint(final OrderInfo orderInfo) {
         final String companyName = "深圳市安鑫宝科技发展有限公司";
         final String stallNumber2 = stallNumberTv.getText().toString();//摊位号
@@ -1189,7 +1189,10 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         List<OrderBean> orderlist = new ArrayList<>(orderBeans);
         orderInfo.setOrderItem(orderlist);
         String billcode = "AX" + DateUtils.getSampleNo() + tid;
-        String currentTime = DateUtils.getYY_TO_ss(new Date());
+        Date date = new Date();
+        String currentTime = DateUtils.getYY_TO_ss(date);
+        String hourTime = DateUtils.getHH(date);
+        String dayTime = DateUtils.getDD(date);
 
         if (payType == 0) {
             orderInfo.setBillstatus("成功");
@@ -1205,15 +1208,12 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
         orderInfo.setMarketid(marketId);
         orderInfo.setTime(currentTime);
+        orderInfo.setHour(Integer.valueOf(hourTime));
+        orderInfo.setDay(Integer.valueOf(dayTime));
         orderInfo.setSettlemethod(0);
         orderInfo.setBillcode(billcode);
 
         helper.commitDD(orderInfo, MainActivity.this, 3);
-
-//        OrderInfoDao<OrderInfo> orderInfoDao = new OrderInfoDao<>(context);
-//        orderInfoDao.insert(orderInfo);
-
-
 
         btnShangtongPrint(orderInfo);
 

@@ -51,6 +51,9 @@ import com.axecom.iweight.my.entity.dao.GoodsDao;
 import com.axecom.iweight.my.entity.dao.OrderBeanDao;
 import com.axecom.iweight.my.entity.dao.OrderInfoDao;
 import com.axecom.iweight.my.helper.HeartBeatServcice;
+import com.axecom.iweight.my.rzl.utils.ApkUtils;
+import com.axecom.iweight.my.rzl.utils.DownloadDialog;
+import com.axecom.iweight.my.rzl.utils.Version;
 import com.axecom.iweight.ui.activity.setting.GoodsSettingActivity;
 import com.axecom.iweight.ui.adapter.GoodMenuAdapter;
 import com.axecom.iweight.utils.ButtonUtils;
@@ -83,6 +86,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.xml.datatype.Duration;
 
 import static com.axecom.iweight.utils.CommonUtils.parseFloat;
 import static com.shangtongyin.tools.serialport.IConstants_ST.KEY;
@@ -179,6 +184,47 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
 
     }
 
+    //检查版本更新
+    private void checkVersion(int marketId){
+        final DownloadDialog downloadDialog=new DownloadDialog(this);
+        ApkUtils.checkRemoteVersion(marketId,sysApplication,new Handler(){
+            @Override
+            public void handleMessage(final Message msg) {
+                if(msg.what==10012){//有下载进度
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(msg.arg2>0){
+                                downloadDialog.setProgress(msg.arg1,msg.arg2);//arg1:已下载字节数,arg2:总字节数
+                            }
+                        }
+                    });
+                }else if(msg.what==10013){//显示下载进度对话框
+                    final Version v=(Version) msg.obj;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadDialog.setVersion(v.version);//版本
+                            downloadDialog.setDate(v.date);//更新日期
+                            downloadDialog.setMarketId(String.valueOf(v.getMarketId()));//市场编号
+                            downloadDialog.setDescription(v.description);//更新描述
+                            downloadDialog.setApkPath(v.apkPath);//apk路径
+                            downloadDialog.show();
+                        }
+                    });
+                }else if(msg.what==10014){//下载失败,允许强行关闭对话框
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            downloadDialog.canForceQuit();
+                            Toast.makeText(MainActivity.this,"更新App失败,请联系运营人员",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                super.handleMessage(msg);
+            }
+        });
+    }
     private void initData() {
         HotKeyBeanList = new ArrayList<>();
         orderBeans = new ArrayList<>();
@@ -215,6 +261,7 @@ public class MainActivity extends MainBaseActivity implements VolleyListener, Vo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkVersion(sysApplication.getMarketid());//检查版本更新
         initViewFirst();
         initData();
         initView();

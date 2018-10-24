@@ -38,6 +38,7 @@ import com.axecom.iweight.my.entity.OrderInfo;
 import com.axecom.iweight.my.entity.ResultInfo;
 import com.axecom.iweight.my.entity.dao.GoodsDao;
 import com.axecom.iweight.my.entity.dao.OrderInfoDao;
+import com.axecom.iweight.my.rzl.utils.ApkUtils;
 import com.axecom.iweight.net.RetrofitFactory;
 import com.axecom.iweight.ui.activity.datasummary.SummaryActivity;
 import com.axecom.iweight.ui.activity.setting.GoodsSettingActivity;
@@ -139,6 +140,10 @@ public class SettingsActivity extends BaseActivity implements VolleyListener {
     public View setInitView() {
         @SuppressLint("InflateParams") View rootView = LayoutInflater.from(this).inflate(R.layout.settings_activity, null);
         settingsGV = rootView.findViewById(R.id.settings_grid_view);
+
+        //当前版本
+        TextView tvSystemVersion=rootView.findViewById(R.id.tvDataUpdate_SystemVersion);
+        tvSystemVersion.setText("当前版本号:" + ApkUtils.getVersionName(this));
 
         context = this;
         sysApplication = (SysApplication) getApplication();

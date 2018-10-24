@@ -1,4 +1,4 @@
-package com.luofx;
+package com.luofx.utils.net;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

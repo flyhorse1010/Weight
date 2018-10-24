@@ -69,7 +69,6 @@ public class SecondPresentation extends Presentation {
 
     public void notifyData(List<OrderInfo> data) {
         if (data != null && data.size() > 0) {
-
                 OrderInfo orderInfoFirst = data.get(0);
                 adapter.setDatas(orderInfoFirst.getOrderItem());
                 tvPayMoney.setText(orderInfoFirst.getTotalamount());
@@ -164,23 +163,6 @@ public class SecondPresentation extends Presentation {
 
         initData();
 
-//        tvPayWay = findViewById(R.id.tvPayWay);
-//        bannerTotalPriceTv = findViewById(R.id.banner_total_price_tv);
-//        bannerOrderLayout = findViewById(R.id.banner_order_layout);
-//        convenientBanner = findViewById(R.id.banner_convenient_banner);
-//
-//        alertView = findViewById(R.id.ll_alert);
-//        titleTv = findViewById(R.id.tv_title);
-//        messageBtn = findViewById(R.id.alert_message);
-//        List<Integer> localImages = new ArrayList<>();
-//        localImages.add(R.drawable.logo);
-//        convenientBanner.setPages(
-//                new CBViewHolderCreator<LocalImageHolderView>() {
-//                    @Override
-//                    public LocalImageHolderView createHolder() {
-//                        return new LocalImageHolderView();
-//                    }
-//                }, localImages);
 
 
     }
@@ -216,17 +198,5 @@ public class SecondPresentation extends Presentation {
         }
     }
 
-//
-//    public void showSelectedGoods(List<OrderBean> goodsList) {
-//        mOrderListView.setAdapter(new OrderAdapter(context, goodsList));
-//    }
-//
-//
-//    public void showPayAmount(String totalAmount, String payMethod) {
-//        bannerOrderLayout.setVisibility(View.VISIBLE);
-//        bannerTotalPriceTv.setText(context.getString(R.string.string_amount_txt3, parseFloat(totalAmount)));
-//        tvPayWay.setText(payMethod);
-//        ivQRCode.setImageDrawable(this.getResources().getDrawable(R.drawable.logo));
-//    }
 
 }

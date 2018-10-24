@@ -56,13 +56,13 @@ public class MainBaseActivity extends Activity implements VolleyListener {
     @Override
     protected void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     public void disableShowInput(final EditText editText) {
@@ -248,7 +248,6 @@ public class MainBaseActivity extends Activity implements VolleyListener {
             Glide.with(context).load(data).into(imageView);
         }
     }
-
 
     /**
      * 跳转Activity的方法,传入我们需要的参数即可

@@ -31,6 +31,7 @@ public interface IConstants_ST {
     int NOTIFY_CLEAR = 9333;
     int NOTIFY_INITDAT = 9444;
     int NOTIFY_SUCCESS = 9555;
+    int NOTIFY_EPAY_SUCCESS = 9666; //电子支付成功
 
 
     String BASE_IP_ST = "http://119.23.43.64/";

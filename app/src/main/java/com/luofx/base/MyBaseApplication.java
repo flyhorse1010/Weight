@@ -4,16 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.luofx.NetWorkJudge;
+import com.luofx.utils.net.NetWorkJudge;
 import com.luofx.listener.VolleyListener;
 import com.luofx.listener.VolleyStringListener;
 import com.luofx.utils.CharsetJsonRequest;
@@ -22,7 +20,6 @@ import com.luofx.utils.log.MyLog;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
